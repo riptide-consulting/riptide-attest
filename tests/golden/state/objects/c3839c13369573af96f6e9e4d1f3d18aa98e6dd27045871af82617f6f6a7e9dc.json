@@ -1,0 +1,1 @@
+{"mfa":{"methods":["totp","webauthn"],"required":true},"service":"provider-portal","session":{"concurrent_sessions_max":2,"enforce_idle_logout":true,"timeout_minutes":15}}

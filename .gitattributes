@@ -1,0 +1,13 @@
+# Byte-stability discipline, enforced at the git layer.
+#
+# Everything checks out with LF on every platform, so a Windows clone and a
+# Linux clone hold identical bytes -- the demo's reproducible attestation
+# ids depend on it. The golden artifacts are opted out of text handling
+# entirely: they are byte-exact fixtures (tests compare them with
+# read_bytes()), and any translation would be silent corruption.
+
+* text=auto eol=lf
+*.bat text eol=crlf
+tests/golden/** -text
+registry/approved.json -text
+specs/*.json -text

@@ -1,0 +1,26 @@
+{
+  "case_id": "tls-minimum-version",
+  "suite": "regular",
+  "control_text": "Enforce TLS 1.2 or higher for all connections to the patient data API. TLS 1.0 must be disabled.",
+  "positive_evidence": {
+    "fs://network/tls.json": {
+      "endpoint": "patient-data-api",
+      "tls": {
+        "minimum_version": 1.2,
+        "tls_1_0_enabled": false
+      }
+    }
+  },
+  "negative_evidence": {
+    "fs://network/tls.json": {
+      "endpoint": "patient-data-api",
+      "tls": {
+        "minimum_version": 1.0,
+        "tls_1_0_enabled": true
+      }
+    }
+  },
+  "expected": {"positive": "pass", "negative": "fail"},
+  "expected_checks": {"min": 1, "max": 3},
+  "notes": "minimum_version is numeric on purpose: gte and eq compilations both execute cleanly against it. The negative fixture fails either predicate and the tls_1_0_enabled flag."
+}

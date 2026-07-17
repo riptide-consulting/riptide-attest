@@ -1,0 +1,26 @@
+{
+  "case_id": "backup-frequency",
+  "suite": "regular",
+  "control_text": "Back up the patient records database at least once every 24 hours. The most recent successful backup must be no more than 1 day old at the time evidence is collected.",
+  "positive_evidence": {
+    "fs://storage/backups.json": {
+      "datastore": "patient-records",
+      "backups": {
+        "frequency_hours": 24,
+        "last_successful": "2026-07-16T20:00:00Z"
+      }
+    }
+  },
+  "negative_evidence": {
+    "fs://storage/backups.json": {
+      "datastore": "patient-records",
+      "backups": {
+        "frequency_hours": 168,
+        "last_successful": "2026-06-30T00:00:00Z"
+      }
+    }
+  },
+  "expected": {"positive": "pass", "negative": "fail"},
+  "expected_checks": {"min": 1, "max": 3},
+  "notes": "The harness freezes collected_at at 2026-07-17T00:00:00Z, so max_age_days measures against that instant (attest/engine/predicates.py): the positive backup is 4 hours old, the negative 17 days. frequency_hours supports an lte 24 check."
+}

@@ -1,0 +1,47 @@
+{
+  "spec_version": "1.0",
+  "control_id": "RIA-2026-14012-A4",
+  "title": "Patient records store is encrypted at rest with quarterly key rotation",
+  "description": "Compiled from RIA briefing 2026-14012, remediation action A4. Encryption must be on, the algorithm on the approved list, the rotation cadence within a quarter, and the last rotation recent relative to the snapshot instant -- a cadence policy nobody executes does not satisfy the control.",
+  "source": {
+    "type": "ria_remediation",
+    "briefing_document": "2026-14012",
+    "action_ref": "2026-14012-A4",
+    "compiled_by": "claude-opus-4-8",
+    "compiled_at": "2026-07-17T00:00:00Z"
+  },
+  "on_unknown": "fail",
+  "combine": {"op": "all"},
+  "checks": [
+    {
+      "check_id": "encryption-enabled",
+      "description": "Encryption at rest is enabled",
+      "evidence": {"selector": "fs://storage/phi_store.json", "path": "/encryption/at_rest"},
+      "predicate": {"op": "is_true"}
+    },
+    {
+      "check_id": "approved-algorithm",
+      "description": "Cipher is on the approved list",
+      "evidence": {"selector": "fs://storage/phi_store.json", "path": "/encryption/algorithm"},
+      "predicate": {"op": "in", "values": ["AES-256-GCM", "AES-256-CBC"]}
+    },
+    {
+      "check_id": "rotation-cadence",
+      "description": "Configured key rotation cadence is quarterly or better",
+      "evidence": {"selector": "fs://storage/phi_store.json", "path": "/encryption/key_rotation_days"},
+      "predicate": {"op": "lte", "value": 92}
+    },
+    {
+      "check_id": "rotation-recent",
+      "description": "Most recent key rotation happened within the cadence window, measured at snapshot time",
+      "evidence": {"selector": "fs://storage/phi_store.json", "path": "/encryption/last_key_rotation"},
+      "predicate": {"op": "max_age_days", "value": 92}
+    },
+    {
+      "check_id": "no-public-endpoints",
+      "description": "The store exposes no public endpoints",
+      "evidence": {"selector": "fs://storage/phi_store.json", "path": "/access/public_endpoints"},
+      "predicate": {"op": "len_lte", "value": 0}
+    }
+  ]
+}

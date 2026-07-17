@@ -1,0 +1,5 @@
+{
+  "frozen_collected_at": "2026-07-17T00:00:00Z",
+  "remediated_collected_at": "2026-07-24T00:00:00Z",
+  "note": "Frozen snapshot timestamps make the demo's attestation ids reproducible byte-for-byte against the documentation. run_demo.py --live-clock uses wall-clock time instead; within-run determinism assertions hold either way."
+}

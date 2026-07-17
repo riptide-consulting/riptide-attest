@@ -1,0 +1,67 @@
+# Riptide Attest CI.
+#
+# Both jobs run on ubuntu-latest with Python 3.11, and that is deliberate:
+# the golden files (tests/golden/) and the demo's attestation ids
+# (docs/PLAN.md, "verified reproducible constants") were frozen on
+# Windows. A green run here proves the determinism claim holds across
+# operating systems -- same evidence, same verdict, byte for byte, on a
+# machine the authors never touched.
+
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    name: offline test suite
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      # The engine is stdlib-only by contract (tests/unit/test_purity.py)
+      # and the suite runs offline; it needs pytest and nothing else.
+      # Deliberately NOT installing requirements.txt: if a test suddenly
+      # needs the model SDK or a network library, this job should turn
+      # red, not quietly install it.
+      - name: install pytest
+        run: pip install pytest
+      - name: run the offline suite
+        run: python -m pytest tests/ -q
+
+  determinism:
+    name: determinism wall
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: install pytest
+        run: pip install pytest
+
+      # The AST scan enforcing the engine's no-clock / no-network /
+      # no-model contract. It already ran inside the tests job; it runs
+      # again here, named, so a purity violation is its own red X and not
+      # a line lost in a wall of dots.
+      - name: the purity wall
+        run: python -m pytest tests/unit/test_purity.py -q
+
+      # run_demo.py is self-verifying (its exit code asserts every
+      # determinism claim within one process). The steps after it assert
+      # the stronger cross-process form: two separate runs, byte-identical
+      # attestation files.
+      - name: demo run 1
+        run: python run_demo.py
+
+      - name: stash run 1 attestations
+        run: cp -r state/demo/attestations "$RUNNER_TEMP/attestations_run1"
+
+      - name: demo run 2
+        run: python run_demo.py
+
+      - name: byte-for-byte comparison of the two runs
+        run: diff -r "$RUNNER_TEMP/attestations_run1" state/demo/attestations

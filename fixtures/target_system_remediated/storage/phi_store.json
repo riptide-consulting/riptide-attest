@@ -1,0 +1,12 @@
+{
+  "datastore": "patient-records",
+  "encryption": {
+    "at_rest": true,
+    "algorithm": "AES-256-GCM",
+    "key_rotation_days": 60,
+    "last_key_rotation": "2026-07-01T00:00:00Z"
+  },
+  "access": {
+    "public_endpoints": []
+  }
+}

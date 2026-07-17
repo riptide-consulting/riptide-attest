@@ -1,0 +1,8 @@
+{
+  "audit_log": {
+    "retention_days": 180,
+    "destination": "siem",
+    "immutable_storage": true,
+    "last_reviewed": "2026-07-22T00:00:00Z"
+  }
+}

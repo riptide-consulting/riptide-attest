@@ -1,0 +1,26 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\".venv/Scripts/python.exe\" .claude/hooks/purity_guard.py"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\".venv/Scripts/python.exe\" .claude/hooks/audit_log.py"
+          }
+        ]
+      }
+    ]
+  }
+}

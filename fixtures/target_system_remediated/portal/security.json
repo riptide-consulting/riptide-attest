@@ -1,0 +1,12 @@
+{
+  "service": "provider-portal",
+  "session": {
+    "timeout_minutes": 15,
+    "enforce_idle_logout": true,
+    "concurrent_sessions_max": 2
+  },
+  "mfa": {
+    "required": true,
+    "methods": ["totp", "webauthn"]
+  }
+}

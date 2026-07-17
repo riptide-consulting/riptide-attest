@@ -1,0 +1,26 @@
+{
+  "case_id": "data-residency",
+  "suite": "regular",
+  "control_text": "Store all patient health information in the us-east-1 data residency region. Replicas outside the United States are prohibited.",
+  "positive_evidence": {
+    "fs://storage/residency.json": {
+      "datastore": "patient-records",
+      "residency": {
+        "region": "us-east-1",
+        "replicas_outside_us": 0
+      }
+    }
+  },
+  "negative_evidence": {
+    "fs://storage/residency.json": {
+      "datastore": "patient-records",
+      "residency": {
+        "region": "eu-central-1",
+        "replicas_outside_us": 2
+      }
+    }
+  },
+  "expected": {"positive": "pass", "negative": "fail"},
+  "expected_checks": {"min": 1, "max": 3},
+  "notes": "The control names the region literally so eq (or in) compiles without guessing infrastructure naming. replicas_outside_us supports an eq 0 or lte 0 check."
+}

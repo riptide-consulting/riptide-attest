@@ -1,0 +1,26 @@
+{
+  "case_id": "access-review-recency",
+  "suite": "regular",
+  "control_text": "Complete a review of privileged access grants at least quarterly. The most recent completed review must be no more than 90 days old at the time evidence is collected.",
+  "positive_evidence": {
+    "fs://iam/access_review.json": {
+      "scope": "privileged-accounts",
+      "access_review": {
+        "last_completed": "2026-06-20T00:00:00Z",
+        "cadence_days": 90
+      }
+    }
+  },
+  "negative_evidence": {
+    "fs://iam/access_review.json": {
+      "scope": "privileged-accounts",
+      "access_review": {
+        "last_completed": "2025-11-01T00:00:00Z",
+        "cadence_days": 365
+      }
+    }
+  },
+  "expected": {"positive": "pass", "negative": "fail"},
+  "expected_checks": {"min": 1, "max": 3},
+  "notes": "Recency against the frozen collected_at (2026-07-17T00:00:00Z): the positive review is 27 days old, the negative 258. max_age_days 90 separates them; cadence_days supports an lte 90 check."
+}

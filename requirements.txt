@@ -1,0 +1,15 @@
+# Riptide Attest -- pinned for reproducible builds.
+#
+# The deterministic engine (attest/engine/) imports NOTHING from this file:
+# it is stdlib-only by contract (tests/unit/test_purity.py). Dependencies
+# below serve the authoring-time model layer, integrations, and dev tooling.
+
+anthropic==0.116.0            # triage / compile / explain (authoring time only)
+python-dotenv==1.2.2          # settings loading (.env)
+mcp==1.28.1                   # evidence adapter MCP server
+notion-client==3.1.0          # gated attestation publish (optional at runtime)
+python-docx==1.2.0            # optional attestation rendering (canonical artifact is JSON)
+
+# dev
+pytest==9.1.1
+ruff==0.15.21

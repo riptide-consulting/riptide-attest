@@ -1,0 +1,41 @@
+{
+  "briefing_document": "2026-14012",
+  "source": "Riptide RIA synthesizer output (Briefing.remediation_plan), verbatim shape",
+  "actions": [
+    {
+      "action_ref": "2026-14012-A1",
+      "action": "Update the provider registration SOP to reflect the revised CMS enrollment screening requirements",
+      "owner": "Regulatory Affairs",
+      "due": "2026-08-01",
+      "priority": "high"
+    },
+    {
+      "action_ref": "2026-14012-A2",
+      "action": "Enforce an idle session timeout of 15 minutes or less on the provider portal",
+      "owner": "Security Engineering",
+      "due": "2026-08-01",
+      "priority": "high"
+    },
+    {
+      "action_ref": "2026-14012-A3",
+      "action": "Set audit log retention to at least 180 days with delivery to the SIEM",
+      "owner": "Security Engineering",
+      "due": "2026-08-15",
+      "priority": "high"
+    },
+    {
+      "action_ref": "2026-14012-A4",
+      "action": "Verify encryption at rest is enabled for the patient records store with quarterly key rotation",
+      "owner": "Infrastructure",
+      "due": "2026-08-15",
+      "priority": "medium"
+    },
+    {
+      "action_ref": "2026-14012-A5",
+      "action": "Train intake and scheduling teams on the revised patient consent workflow",
+      "owner": "Compliance PMO",
+      "due": "2026-09-01",
+      "priority": "medium"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "note": "Recorded output of the triage agent (Haiku 4.5) over fixtures/ria_remediation_plan.json, so the demo replays authoring-time judgment without an API key. The live path is: python main.py triage fixtures/ria_remediation_plan.json",
+  "decisions": [
+    {
+      "action_ref": "2026-14012-A1",
+      "action": "Update the provider registration SOP to reflect the revised CMS enrollment screening requirements",
+      "attestable": false,
+      "confidence": 0.96,
+      "rationale": "Document revision work; correctness is editorial judgment, not a machine-checkable system state."
+    },
+    {
+      "action_ref": "2026-14012-A2",
+      "action": "Enforce an idle session timeout of 15 minutes or less on the provider portal",
+      "attestable": true,
+      "confidence": 0.94,
+      "rationale": "Session timeout is a configuration value with a numeric bound; verifiable against portal security config."
+    },
+    {
+      "action_ref": "2026-14012-A3",
+      "action": "Set audit log retention to at least 180 days with delivery to the SIEM",
+      "attestable": true,
+      "confidence": 0.95,
+      "rationale": "Retention period and destination are configuration values; verifiable against logging config."
+    },
+    {
+      "action_ref": "2026-14012-A4",
+      "action": "Verify encryption at rest is enabled for the patient records store with quarterly key rotation",
+      "attestable": true,
+      "confidence": 0.91,
+      "rationale": "Encryption flag, algorithm, and rotation cadence are machine-readable datastore configuration."
+    },
+    {
+      "action_ref": "2026-14012-A5",
+      "action": "Train intake and scheduling teams on the revised patient consent workflow",
+      "attestable": false,
+      "confidence": 0.97,
+      "rationale": "Training completion lives in an LMS and attendance records; out of scope for the configured evidence adapters."
+    }
+  ]
+}

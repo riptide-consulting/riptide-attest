@@ -1,0 +1,35 @@
+{
+  "spec_version": "1.0",
+  "control_id": "RIA-2026-14012-A3",
+  "title": "Audit log retention is at least 180 days with delivery to the SIEM",
+  "description": "Compiled from RIA briefing 2026-14012, remediation action A3. Retention bound and destination are both required; retention without SIEM delivery leaves the record unreviewable and does not satisfy the control.",
+  "source": {
+    "type": "ria_remediation",
+    "briefing_document": "2026-14012",
+    "action_ref": "2026-14012-A3",
+    "compiled_by": "claude-opus-4-8",
+    "compiled_at": "2026-07-17T00:00:00Z"
+  },
+  "on_unknown": "fail",
+  "combine": {"op": "all"},
+  "checks": [
+    {
+      "check_id": "retention-at-least-180",
+      "description": "Audit log retention period is 180 days or more",
+      "evidence": {"selector": "fs://logging/retention.json", "path": "/audit_log/retention_days"},
+      "predicate": {"op": "gte", "value": 180}
+    },
+    {
+      "check_id": "siem-delivery",
+      "description": "Audit log destination is the SIEM",
+      "evidence": {"selector": "fs://logging/retention.json", "path": "/audit_log/destination"},
+      "predicate": {"op": "eq", "value": "siem"}
+    },
+    {
+      "check_id": "immutable-storage",
+      "description": "Audit log storage is immutable",
+      "evidence": {"selector": "fs://logging/retention.json", "path": "/audit_log/immutable_storage"},
+      "predicate": {"op": "is_true"}
+    }
+  ]
+}
