@@ -9,3 +9,6 @@ outputs/
 
 evaluations/results/*
 !evaluations/results/.gitkeep
+
+presentation/out/
+presentation/node_modules/
