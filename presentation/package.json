@@ -1,0 +1,17 @@
+{
+  "name": "riptide-attest-presentation",
+  "version": "1.0.0",
+  "description": "Builds the Riptide Attest master deck and technical documentation from source, with quality gates",
+  "private": true,
+  "scripts": {
+    "diagrams": "python diagrams/diagrams.py",
+    "deck": "node build/build_deck.js",
+    "doc": "node build/build_techdoc.js",
+    "gates": "python qa/contrast_gate.py out/Riptide-Attest-Master-Deck.pptx && python qa/layout_gate.py out/Riptide-Attest-Master-Deck.pptx",
+    "all": "npm run diagrams && npm run deck && npm run doc && npm run gates"
+  },
+  "dependencies": {
+    "pptxgenjs": "^3.12.0",
+    "docx": "^8.5.0"
+  }
+}
