@@ -158,6 +158,20 @@ def cmd_publish(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_render(args: argparse.Namespace) -> int:
+    from attest.rendering import render_docx
+
+    attestation_id, body = load_attestation(Path(args.attestation))
+    out = Path(args.out) if args.out else Path(args.attestation).with_suffix(".docx")
+    path = render_docx(body, out)
+    audit("render", attestation_id=attestation_id, path=str(path))
+    _emit(args, {"attestation_id": attestation_id, "path": str(path)},
+          f"rendered {attestation_id} -> {path}\n"
+          "(The canonical artifact is the attestation JSON; "
+          "this rendering is a convenience for circulation.)")
+    return 0
+
+
 def _model_cmd(module: str, func: str):
     """Authoring verbs import the model layer lazily: the runtime verbs
     above must work on a machine with no anthropic SDK installed."""
@@ -216,6 +230,12 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("attestation")
     common(p)
     p.set_defaults(func=cmd_publish)
+
+    p = sub.add_parser("render", help="render an attestation as a DOCX report (a convenience; the JSON is the record)")
+    p.add_argument("attestation")
+    p.add_argument("--out", help="output path (default: alongside the attestation)")
+    common(p)
+    p.set_defaults(func=cmd_render)
 
     p = sub.add_parser("triage", help="classify remediation actions (model, authoring time)")
     p.add_argument("plan", help="RIA remediation plan JSON")
