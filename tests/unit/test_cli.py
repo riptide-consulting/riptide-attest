@@ -154,3 +154,13 @@ def test_approve_writes_registry(env, tmp_path, capsys):
     assert len(registry["approved"]) == 1
     entry = next(iter(registry["approved"].values()))
     assert entry["approved_by"] == "test.human"
+
+
+def test_render_produces_docx_report(env, capsys):
+    pytest.importorskip("docx", reason="python-docx is optional; the JSON is the record")
+    out = Path(env["state"]) / "report.docx"
+    code = run(["render", env["att_path"], "--out", str(out),
+                "--state", env["state"], "--registry", env["registry"]])
+    assert code == 0
+    assert out.exists() and out.stat().st_size > 10000
+    assert env["meta"]["attestation_id"] in capsys.readouterr().out
